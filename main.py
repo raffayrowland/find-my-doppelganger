@@ -4,8 +4,8 @@ from PIL import Image
 
 populate_database()
 
-nearest = get_nearest_neighbors_cosine(make_embedding("example.jpeg"))
-print(get_nearest_neighbors_cosine(make_embedding("example.jpeg")))
+nearest = get_nearest_neighbors_cosine(make_embedding("download.jpeg"))
+print(nearest)
 
 def open_image(path: str) -> Image.Image:
     return Image.open(path)
