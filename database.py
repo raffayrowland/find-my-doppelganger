@@ -1,22 +1,34 @@
-import psycopg
 import os
+import pg8000
 from dotenv import load_dotenv
-
 load_dotenv()
 
-DB_URL = "postgresql://faceapp:" + os.getenv("DB_PASSWORD") + "@localhost:5432/faceapp"
+conn = pg8000.connect(
+    user="faceapp",
+    password=os.getenv("DB_PASSWORD"),
+    host="localhost",
+    port=5432,
+    database="faceapp",
+)
 
 def add_embedding(image_key, embedding):
-    with psycopg.connect(DB_URL) as conn:
-        with conn.cursor() as cursor:
-            cursor.execute("INSERT INTO faces (image_key, embedding) VALUES (%s, %s)", (image_key, embedding))
-
-        conn.commit()
+    vec = "[" + ",".join(map(str, embedding)) + "]"
+    cur = conn.cursor()
+    cur.execute(
+        "INSERT INTO faces (image_key, embedding) VALUES (%s, %s::vector)",
+        (image_key, vec),
+    )
+    conn.commit()
 
 
 def get_nearest_neighbors(embedding, top_k=5):
-    with psycopg.connect(DB_URL) as conn:
-        with conn.cursor() as cursor:
-            cursor.execute("SELECT image_key, (embedding <=> %s) AS dist FROM faces ORDER BY embedding <=> %s LIMIT %s", (embedding, embedding, top_k))
-            rows = cursor.fetchall()
-            return rows
+    vec = "[" + ",".join(map(str, embedding)) + "]"
+    sql = """
+        SELECT image_key, (embedding <=> %s::vector) AS dist
+        FROM faces
+        ORDER BY embedding <=> %s::vector
+        LIMIT %s
+    """
+    cur = conn.cursor()
+    cur.execute(sql, (vec, vec, top_k))
+    return cur.fetchall()

@@ -1,3 +1,7 @@
 .env
 .venv
 .idea
+/Humans
+front.jpeg
+test.py
+__pycache__

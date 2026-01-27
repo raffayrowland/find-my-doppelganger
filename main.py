@@ -1,17 +1,22 @@
 from deepface import DeepFace
+import os
+from database import add_embedding, get_nearest_neighbors
 
-# 1) Put your candidate faces in a folder, e.g.
-#    db/
-#      alice.jpg
-#      bob.png
-#      charlie.jpeg
-#
-# 2) Put the user upload as query.jpg
+def make_embedding(path):
+    embedding = DeepFace.represent(
+        img_path=path,
+        model_name="ArcFace",
+        detector_backend="retinaface",
+        align=True,
+        enforce_detection=True
+    )[0]['embedding']
+    return embedding
 
-query_path = "unnamed.jpg"
-db_path = "imgs"
+imgs = os.listdir("Humans")
+print(imgs)
+for i in range(100):
+    print(f"Processing image {i}:  Humans/{imgs[i]}")
+    embedding = make_embedding(os.path.join("Humans", imgs[i]))
+    add_embedding(image_key=os.path.join("Humans", imgs[i]), embedding=embedding)
 
-# Returns a pandas DataFrame (wrapped in a list) of best matches sorted by distance
-embedding: list[dict] = DeepFace.represent(img_path=query_path, model_name="ArcFace")
-
-print(embedding)
+print(get_nearest_neighbors(make_embedding("front.jpeg")))
