@@ -1,22 +1,16 @@
-from deepface import DeepFace
-import os
-from database import add_embedding, get_nearest_neighbors
+from populate_database import populate_database, make_embedding
+from database import get_nearest_neighbors_cosine, get_nearest_neighbors_l2
+from PIL import Image
 
-def make_embedding(path):
-    embedding = DeepFace.represent(
-        img_path=path,
-        model_name="ArcFace",
-        detector_backend="retinaface",
-        align=True,
-        enforce_detection=True
-    )[0]['embedding']
-    return embedding
+populate_database()
 
-imgs = os.listdir("Humans")
-print(imgs)
-for i in range(100):
-    print(f"Processing image {i}:  Humans/{imgs[i]}")
-    embedding = make_embedding(os.path.join("Humans", imgs[i]))
-    add_embedding(image_key=os.path.join("Humans", imgs[i]), embedding=embedding)
+nearest = get_nearest_neighbors_cosine(make_embedding("example.jpeg"))
+print(get_nearest_neighbors_cosine(make_embedding("example.jpeg")))
 
-print(get_nearest_neighbors(make_embedding("front.jpeg")))
+def open_image(path: str) -> Image.Image:
+    return Image.open(path)
+
+for image in nearest:
+    img = open_image(image[0])
+    img.show()
+

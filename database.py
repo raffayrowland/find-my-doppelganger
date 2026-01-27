@@ -21,7 +21,7 @@ def add_embedding(image_key, embedding):
     conn.commit()
 
 
-def get_nearest_neighbors(embedding, top_k=5):
+def get_nearest_neighbors_cosine(embedding, top_k=5):
     vec = "[" + ",".join(map(str, embedding)) + "]"
     sql = """
         SELECT image_key, (embedding <=> %s::vector) AS dist
@@ -32,3 +32,22 @@ def get_nearest_neighbors(embedding, top_k=5):
     cur = conn.cursor()
     cur.execute(sql, (vec, vec, top_k))
     return cur.fetchall()
+
+def get_nearest_neighbors_l2(embedding, top_k=5):
+    vec = "[" + ",".join(map(str, embedding)) + "]"
+    sql = """
+        SELECT image_key, (embedding <-> %s::vector) AS dist
+        FROM faces
+        ORDER BY embedding <-> %s::vector
+        LIMIT %s
+    """
+    cur = conn.cursor()
+    cur.execute(sql, (vec, vec, top_k))
+    return cur.fetchall()
+
+def get_database_size():
+    cur = conn.cursor()
+    cur.execute(
+        "SELECT COUNT(*) FROM faces"
+    )
+    return cur.fetchone()[0]
