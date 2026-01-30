@@ -22,7 +22,10 @@ def add_embedding(image_key, embedding):
 
 
 def get_nearest_neighbors_cosine(embedding, top_k=5):
-    vec = "[" + ",".join(map(str, embedding)) + "]"
+    if type(embedding) != str:
+        vec = "[" + ",".join(map(str, embedding)) + "]"
+    else:
+        vec = embedding
     sql = """
         SELECT image_key, (embedding <=> %s::vector) AS dist
         FROM faces
@@ -44,6 +47,22 @@ def get_nearest_neighbors_l2(embedding, top_k=5):
     cur = conn.cursor()
     cur.execute(sql, (vec, vec, top_k))
     return cur.fetchall()
+
+def get_embedding(id):
+    cur = conn.cursor()
+    cur.execute(
+        "SELECT embedding FROM faces WHERE id = %s",
+        (id,)
+    )
+    return cur.fetchone()[0]
+
+def get_image_key(id):
+    cur = conn.cursor()
+    cur.execute(
+        "SELECT image_key FROM faces WHERE id = %s",
+        (id,)
+    )
+    return cur.fetchone()[0]
 
 def get_database_size():
     cur = conn.cursor()
