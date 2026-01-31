@@ -21,7 +21,7 @@ def add_embedding(image_key, embedding):
     conn.commit()
 
 
-def get_nearest_neighbors_cosine(embedding, top_k=10):
+def get_nearest_neighbors_cosine(embedding, top_k=5):
     if type(embedding) != str:
         vec = "[" + ",".join(map(str, embedding)) + "]"
     else:
