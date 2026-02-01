@@ -27,8 +27,16 @@ def make_embedding_aligned(path):
     )[0]['embedding']
     return embedding
 
+
+# --- Only for use if populating database using images ---
+
 def get_image_list():
-    subfolders = os.listdir(DATASET_PATH)
+    """
+    This code was written for the ffhq dataset. If you want to use your own
+    images, you will need to rewrite this function.
+    :return: list of image paths
+    """
+    subfolders = os.listdir(DATASET_PATH)  # To use this, add the path to your .env file
     subfolders.remove('LICENSE.txt')
     all_files = []
 

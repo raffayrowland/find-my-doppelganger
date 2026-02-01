@@ -1,13 +1,10 @@
-CREATE DATABASE faceapp OWNER faceapp;
-\connect faceapp
-
 -- enable pgvector in this DB
 CREATE EXTENSION IF NOT EXISTS vector;
 
 CREATE TABLE IF NOT EXISTS faces (
   id bigserial PRIMARY KEY,
-  image_key text NOT NULL,        -- path / S3 key / URL pointer
-  embedding vector(512) NOT NULL, -- change 512 if your model differs
+  image_key text NOT NULL,        -- path
+  embedding vector(512) NOT NULL,
   created_at timestamptz DEFAULT now()
 );
 
