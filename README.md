@@ -28,9 +28,13 @@ All query images used for these demos were generated using [thispersondoesnotexi
 - Python 3.12
 - sql_dump.sql file downloaded
 
+#### Recommended:
+- CUDA toolkit
+
 --- 
 
 # Installation
+commands shown are for Linux systems
 ### Clone the repository and set up the environment:
 ```
 git clone https://github.com/raffayrowland/find-my-doppelganger.git 
@@ -38,16 +42,33 @@ cd find-my-doppelganger
 pip install -r requirements.txt
 touch .env
 ```
-### Set up Postgres database:
+
+### Option 1: get data from dump (recommended)
+
+Download the [dump](https://drive.google.com/file/d/1C0XeSGiza4tn2VH-kZHBXQJhdiQWBDrn/view?usp=sharing) from google drive, then run this:
+
+```
+sudo -u postgres createdb faceapp
+sudo -u postgres pg_restore -d faceapp --no-owner --no-privileges faceapp_full.dump
+```
+
+#### Add this line to your .env file:
+```
+DB_PASSWORD="faceapp_password"
+```
+
+### Option 2: use your own data
+
+#### Set up Postgres database:
 ```
 createuser -P faceapp  -- Set password and remember it
 createdb -O faceapp faceapp
 ```
-### Run inside the faceapp database:
+#### Run inside the faceapp database:
 ```
 psql -d faceapp -f setup.sql
 ```
-### Add this line to your .env file:
+#### Add this line to your .env file:
 ```
 DB_PASSWORD="{insert your db password here}"
 ```
