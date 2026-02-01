@@ -4,7 +4,7 @@ from database import get_nearest_neighbors_cosine, get_nearest_neighbors_l2
 from PIL import Image, ImageTk
 import tkinter as tk
 
-image = "example.jpeg"
+image = "Pasted image (7).png"
 
 populate_database()
 nearest = get_nearest_neighbors_cosine(make_embedding_aligned(image))

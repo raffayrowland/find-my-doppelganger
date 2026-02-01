@@ -21,7 +21,7 @@ def make_embedding_aligned(path):
     embedding = DeepFace.represent(
         img_path=path,
         model_name="Facenet512",
-        detector_backend="skip",
+        detector_backend="opencv",
         align=True,
         enforce_detection=True
     )[0]['embedding']
