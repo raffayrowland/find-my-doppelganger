@@ -2,10 +2,13 @@
 CREATE EXTENSION IF NOT EXISTS vector;
 
 CREATE TABLE IF NOT EXISTS faces (
-  id bigserial PRIMARY KEY,
-  image_key text NOT NULL,        -- path
-  embedding vector(512) NOT NULL,
-  created_at timestamptz DEFAULT now()
+    id bigserial PRIMARY KEY,
+    image_key text NOT NULL,        -- path
+    age int NOT NULL,
+    sex char(1) NOT NULL CHECK (sex IN ('F', 'M')),
+    race VARCHAR(20) NOT NULL
+        CHECK (race IN ('asian', 'white', 'middle eastern', 'indian', 'latino hispanic', 'black')),
+    embedding vector(512) NOT NULL
 );
 
 -- for cosine distance search (recommended for normalized embeddings)

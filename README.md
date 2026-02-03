@@ -9,6 +9,7 @@ Utilises facial embeddings and a Postgres (pgvector) database / cosine similarit
 - Deepface / Facenet512
 - Postgres / pgvector
 - Nvidia ffhq dataset
+- Tkinter
 
 # Demo
 All query images used for these demos were generated using [thispersondoesnotexist.com](https://thispersondoesnotexist.com/), and results are from the ffhq dataset. The query image is the large one on top, and the results are the 5 smaller images.
@@ -26,7 +27,7 @@ All query images used for these demos were generated using [thispersondoesnotexi
 - PostgreSQL
 - pgvector
 - Python 3.12
-- sql_dump.sql file downloaded
+- faceapp_full.dump file downloaded
 
 #### Recommended:
 - CUDA toolkit
@@ -45,7 +46,7 @@ touch .env
 
 ### Option 1: get data from dump (recommended)
 
-Download the [dump](https://drive.google.com/file/d/1C0XeSGiza4tn2VH-kZHBXQJhdiQWBDrn/view?usp=sharing) from google drive, then run this:
+Download the [dump](https://drive.google.com/file/d/13rFob7TGYQVW7dEDDJUTTKeTVaZ9JKqB/view?usp=sharing) from Google Drive, then run this:
 
 ```
 sudo -u postgres createdb faceapp

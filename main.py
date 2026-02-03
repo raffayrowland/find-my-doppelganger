@@ -1,4 +1,4 @@
-from populate_database import make_embedding_aligned
+from populate_database import make_embedding_aligned, populate_database, generate_attributes
 from database import get_nearest_neighbors_cosine
 from PIL import Image, ImageTk
 import tkinter as tk
@@ -9,6 +9,8 @@ TOP_K = 5
 photos = []
 image = None  # selected file path
 preview_label = None
+
+# populate_database()
 
 root = tk.Tk()
 root.title("Find my doppelgänger")
@@ -91,6 +93,10 @@ def choose_file():
 
 def run_query():
     try:
+        # attributes = generate_attributes(image)
+        # sex = 'F' if attributes[0]['dominant_gender'] == 'Woman' else 'M'
+        # age = attributes[0]['age']
+        # race = attributes[0]['dominant_race']
         nearest = get_nearest_neighbors_cosine(make_embedding_aligned(image))
         show_results(nearest)
     except Exception as e:

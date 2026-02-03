@@ -27,6 +27,15 @@ def make_embedding_aligned(path):
     )[0]['embedding']
     return embedding
 
+def generate_attributes(path):
+    attributes = DeepFace.analyze(
+        img_path=path,
+        actions=['age', 'gender', 'race'],
+        enforce_detection=False,
+        silent=True
+    )
+    return attributes
+
 
 # --- Only for use if populating database using images ---
 
@@ -55,9 +64,16 @@ def populate_database():
     startTime = time.time()
     processed = 0
     for i in range(databaseSize, 70000):
+        attributes = generate_attributes(imgs[i])
+        sex = 'F' if attributes[0]['dominant_gender'] == 'Woman' else 'M'
+        age = attributes[0]['age']
+        race = attributes[0]['dominant_race']
         embedding = make_embedding(imgs[i])
         add_embedding(image_key=imgs[i],
-                      embedding=embedding)
+                      embedding=embedding,
+                      age=age,
+                      race=race,
+                      sex=sex)
         processed += 1
         rate = processed / (time.time() - startTime)
         print(f"Processing image {i} at rate {rate:.2f}/s.  ETA: {(((70000 - i) / rate) // 60)} minutes")
