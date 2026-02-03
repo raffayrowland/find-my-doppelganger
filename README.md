@@ -1,6 +1,6 @@
 # Find my doppelgänger 
 
-Utilises facial embeddings and a Postgres (pgvector) database / cosine similarity to find the face that most closely resembles the query face. Dataset contains 70k faces from ffhq (more info below), pre-embedded using Facenet512.
+Utilises facial embeddings and a Postgres (pgvector) database / cosine similarity to find the face that most closely resembles the query face. Dataset contains 70k faces from FFHQ (more info below), pre-embedded using Facenet512.
 
 ---
 
@@ -8,7 +8,7 @@ Utilises facial embeddings and a Postgres (pgvector) database / cosine similarit
 - Python 3.12
 - Deepface / Facenet512
 - Postgres / pgvector
-- Nvidia ffhq dataset
+- NVLabs FFHQ dataset
 - Tkinter
 
 # Demo
@@ -27,7 +27,7 @@ All query images used for these demos were generated using [thispersondoesnotexi
 - PostgreSQL
 - pgvector
 - Python 3.12
-- faceapp_full.dump file downloaded
+- faceapp_full.dump (For installation option 1)
 - internet connection
 
 #### Recommended:
@@ -47,11 +47,14 @@ touch .env
 
 ### Option 1: get data from dump (recommended)
 
-Download the [dump](https://drive.google.com/file/d/13rFob7TGYQVW7dEDDJUTTKeTVaZ9JKqB/view?usp=sharing) from Google Drive, then run this:
+Download the [dump](https://drive.google.com/file/d/1Awg18xHBh2k06sL-CIE_vcBH25fMevDi/view?usp=sharing) from Google Drive, then run this:
 
 ```
 sudo -u postgres createdb faceapp
 sudo -u postgres pg_restore -d faceapp --no-owner --no-privileges faceapp_full.dump
+```
+Run inside psql:
+```
 \c faceapp
 CREATE ROLE faceapp WITH LOGIN PASSWORD 'faceapp_password';
 ALTER TABLE faces OWNER TO faceapp;
@@ -62,7 +65,7 @@ ALTER TABLE faces OWNER TO faceapp;
 DB_PASSWORD="faceapp_password"
 ```
 
-The images are hosted on Google Drive, so no need to download local files.
+The images are hosted on Google Drive, so no need to download the full dataset locally
 
 ### Option 2: use your own data
 
@@ -83,9 +86,9 @@ DB_PASSWORD="{insert your db password here}"
 --- 
 
 # Dataset
-- Used Nvidia's ffhq dataset
+- Used Nvidia's FFHQ dataset
 - Specifically, the 1024x1024 portion
-- [Dataset repo](https://github.com/NVlabs/ffhq-dataset)
+- [Dataset repo](https://github.com/NVlabs/FFHQ-dataset)
 
 --- 
 
