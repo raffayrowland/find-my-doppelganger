@@ -12,7 +12,7 @@ Utilises facial embeddings and a Postgres (pgvector) database / cosine similarit
 - Tkinter
 
 # Demo
-All query images used for these demos were generated using [thispersondoesnotexist.com](https://thispersondoesnotexist.com/), and results are from the ffhq dataset. The query image is the large one on top, and the results are the 5 smaller images.
+All query images used for these demos were generated using [thispersondoesnotexist.com](https://thispersondoesnotexist.com/) for privacy reasons, and results are from the ffhq dataset. The query image is the large one on top, and the results are the 5 smaller images.
 
 <img src="images/example2_with_results.png" width="600" alt="Demo 1">
 
@@ -28,6 +28,7 @@ All query images used for these demos were generated using [thispersondoesnotexi
 - pgvector
 - Python 3.12
 - faceapp_full.dump file downloaded
+- internet connection
 
 #### Recommended:
 - CUDA toolkit
@@ -51,12 +52,17 @@ Download the [dump](https://drive.google.com/file/d/13rFob7TGYQVW7dEDDJUTTKeTVaZ
 ```
 sudo -u postgres createdb faceapp
 sudo -u postgres pg_restore -d faceapp --no-owner --no-privileges faceapp_full.dump
+\c faceapp
+CREATE ROLE faceapp WITH LOGIN PASSWORD 'faceapp_password';
+ALTER TABLE faces OWNER TO faceapp;
 ```
 
 #### Add this line to your .env file:
 ```
 DB_PASSWORD="faceapp_password"
 ```
+
+The images are hosted on Google Drive, so no need to download local files.
 
 ### Option 2: use your own data
 

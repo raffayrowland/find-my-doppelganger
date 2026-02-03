@@ -2,3 +2,4 @@ deepface
 pg8000
 python-dotenv
 pillow
+tf-keras
